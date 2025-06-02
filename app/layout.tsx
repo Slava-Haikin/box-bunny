@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import Image from 'next/image';
+import { Container } from "@/components/ui/container";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,10 +28,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex min-h-screen flex-col`}
       >
-        {children}
+        <header>
+          <Container>
+            <Image src={"/logo.svg"} width={150} height={86} alt={"Логотип Box Bunny."} />
+          </Container>
+        </header>
+        <main className="flex-1">
+          {children}
+        </main>
+        <footer>
+          <Container className="text-center">
+            A meal prep app.
+          </Container>
+        </footer>
       </body>
+      
     </html>
   );
 }

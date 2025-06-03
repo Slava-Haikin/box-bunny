@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 
-import Image from 'next/image';
-import { Container } from "@/components/ui/container";
 import Link from "next/link";
+import Image from 'next/image';
+
+import { Container } from "@/components/ui/container";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,7 +23,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Meal Prep App | Box Bunny",
   description: "Keep it tight - keep health right!",
-};
+ };
 
 export default function RootLayout({
   children,

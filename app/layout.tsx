@@ -73,7 +73,6 @@ export default function RootLayout({
           </Container>
         </footer>
       </body>
-      
     </html>
   );
 }

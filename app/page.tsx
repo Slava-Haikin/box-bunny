@@ -10,12 +10,8 @@ export default function Home() {
             <TabsTrigger value="grocery-list">Grocery list</TabsTrigger>
             <TabsTrigger value="preparation">Cooking</TabsTrigger>
           </TabsList>
-          <TabsContent value="grocery-list">
-            1
-          </TabsContent>
-          <TabsContent value="preparation">
-            2
-          </TabsContent>
+          <TabsContent value="grocery-list">1</TabsContent>
+          <TabsContent value="preparation">2</TabsContent>
         </Tabs>
       </div>
     </Container>

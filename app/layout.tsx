@@ -2,10 +2,14 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import Link from "next/link";
-import Image from 'next/image';
+import Image from "next/image";
 
 import { Container } from "@/components/ui/container";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 
 import "./globals.css";
@@ -23,7 +27,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Meal Prep App | Box Bunny",
   description: "Keep it tight - keep health right!",
- };
+};
 
 export default function RootLayout({
   children,
@@ -37,8 +41,13 @@ export default function RootLayout({
       >
         <header>
           <Container className="flex justify-between">
-            <Link href={'/'} className="block w-fit">
-              <Image src={"/logo.svg"} width={150} height={86} alt={"Box Bunny Logo."} />
+            <Link href={"/"} className="block w-fit">
+              <Image
+                src={"/logo.svg"}
+                width={150}
+                height={86}
+                alt={"Box Bunny Logo."}
+              />
             </Link>
             <Popover>
               <PopoverTrigger asChild>
@@ -63,14 +72,10 @@ export default function RootLayout({
           </Container>
         </header>
 
-        <main className="flex-1">
-          {children}
-        </main>
+        <main className="flex-1">{children}</main>
 
         <footer>
-          <Container className="text-center">
-            A meal prep app.
-          </Container>
+          <Container className="text-center">A meal prep app.</Container>
         </footer>
       </body>
     </html>

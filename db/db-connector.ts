@@ -46,15 +46,38 @@ export class DatabaseConnector {
         }
     }
 
-    async readData() {
-        
+    async readData(query: string, params: string[] = []): Promise<string[]> {
+        try {
+            const db = await this.openConnection();
+            const rows = await db.all(query, ...params);
+
+            return rows;
+        } catch(e) {
+            console.error('Error reading data:', e);
+
+            throw e;
+        }
     }
 
-    async updateData() {
-        
+    async updateData(query: string, params: string[] = []): Promise<void> {
+        try {
+            const db = await this.openConnection();
+            const rows = await db.run(query, ...params);
+        } catch(e) {
+            console.error('Error reading data:', e);
+
+            throw e;
+        }
     }
 
-    async deleteData() {
-        
+    async deleteData(query: string, params: string[] = []): Promise<void> {
+        try {
+            const db = await this.openConnection();
+            const rows = await db.run(query, ...params);
+        } catch(e) {
+            console.error('Error reading data:', e);
+
+            throw e;
+        }
     }
 }

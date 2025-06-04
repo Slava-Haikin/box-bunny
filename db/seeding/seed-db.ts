@@ -1,7 +1,7 @@
-import { DatabaseConnector, db } from "../connection";
-import SQL_QUERIES from "../sql-queries";
+import { DatabaseConnector, db } from "../source"
+import SQL_QUERIES from "../queries"
 
-const seedDb = async (db: DatabaseConnector): Promise<void> => {
+const seedDb=async(db: DatabaseConnector): Promise<void> => {
     await db.updateData(SQL_QUERIES.seedData.createRecipesTable)
     await db.updateData(SQL_QUERIES.seedData.createIngredientsTable)
     await db.updateData(SQL_QUERIES.seedData.createRecipesIngredientsTable)
@@ -11,4 +11,6 @@ const seedDb = async (db: DatabaseConnector): Promise<void> => {
     await db.updateData(SQL_QUERIES.seedData.insertRecipesIngredients)
 }
 
-export default seedDb;
+const executeSeeding = () => seedDb(db)
+
+export default executeSeeding

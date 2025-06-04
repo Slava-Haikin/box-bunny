@@ -1,4 +1,4 @@
-import { DatabaseConnector } from "../connection/db-connector";
+import { DatabaseConnector } from "../source/db-connector";
 
 export class RecipeManager {
     constructor(private db: DatabaseConnector) {}

@@ -49,7 +49,6 @@ interface MealPlan {
     [MEAL.lunch]: Recipe;
     [MEAL.snack]: Recipe;
     [MEAL.supper]: Recipe;
-
 }
 
 export type {

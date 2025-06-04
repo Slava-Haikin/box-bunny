@@ -75,7 +75,9 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
 
         <footer>
-          <Container className="text-center">The easiest way to healthy life and sexy body.</Container>
+          <Container className="text-center">
+            The easiest way to healthy life and sexy body.
+          </Container>
         </footer>
       </body>
     </html>

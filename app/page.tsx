@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-import { cachedMealPlan, dataManager } from "@/db/managers/data-managers";
+import { cachedMealPlan, dataManager } from "@/db/managers";
 
 export default async function Home() {
   const mealPlan = await cachedMealPlan()

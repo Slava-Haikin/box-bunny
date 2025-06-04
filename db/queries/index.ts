@@ -48,10 +48,10 @@ const SQL_QUERIES = {
         insertRecipes: `
             INSERT INTO recipes (title, description, instructions, meal, difficulty, cook_time, servings, image_url, tags)
             VALUES 
-                ('Lazy Oatmeal', 'A simple and quick breakfast option.', '1. Add oats to a pot and boil it for 10 minutes. 2. Pour milk, add peanut butter and greek yoghurt. 3. Let sit overnight. 4. Add crushed peanuts and chia seeds (optionally)', 'breakfast', 'easy', 5, 1, 'oatmeal.jpg', 'vegetarian'),
-                ('Kefir with Marshmallows', 'A light snack for afternoon time.', '1. Pour kefir into a glass. 2. Add one marshmallow.', 'snack', 'easy', 2, 1, 'kefir.jpg', 'vegetarian'),
-                ('Buckwheat with Carrots, Onions, Garlic, Ground Chicken Meat, and Tomato Paste', 'A nutritious lunch option with buckwheat and vegetables.', '1. Boil buckwheat. 2. Sauté carrots, onions, and garlic. 3. Add ground chicken meat and tomato paste, add salt, pepper. 4. Combine with buckwheat.', 'lunch', 'medium', 30, 2, 'buckwheat.jpg', 'gluten free'),
-                ('Mujaddara (Rice with Lentils)', 'A healthy dinner option with rice and lentils.', '1. Boil rice and lentils. 2. Fry onions. 3. Combine with rice and lentils.', 'supper', 'medium', 40, 2, 'mujaddara.jpg', 'vegan');
+                ('Lazy Oatmeal', 'A simple and quick breakfast option.', 'Add oats to a pot and boil it for 10 minutes.; Pour milk, add peanut butter and greek yoghurt.; Let sit overnight.; Add crushed peanuts and chia seeds (optionally)', 'breakfast', 'easy', 5, 1, 'oatmeal.jpg', 'vegetarian'),
+                ('Kefir with Marshmallows', 'A light snack for afternoon time.', 'Pour kefir into a glass.; Add one marshmallow.', 'snack', 'easy', 2, 1, 'kefir.jpg', 'vegetarian'),
+                ('Buckwheat with Carrots, Onions, Garlic, Ground Chicken Meat, and Tomato Paste', 'A nutritious lunch option with buckwheat and vegetables.', 'Boil buckwheat.; Sauté carrots, onions, and garlic.; Add ground chicken meat and tomato paste, add salt, pepper.; Combine with buckwheat.', 'lunch', 'medium', 30, 2, 'buckwheat.jpg', 'gluten free'),
+                ('Mujaddara (Rice with Lentils)', 'A healthy dinner option with rice and lentils.', 'Boil rice and lentils.; Fry onions.; Combine with rice and lentils.', 'supper', 'medium', 40, 2, 'mujaddara.jpg', 'vegan');
         `,
         insertIngredients: `
             INSERT INTO ingredients (original, name, unit, unit_short, unit_long, possible_units, estimated_cost_value, estimated_cost_unit, consistency, shopping_list_units, aisle, image_url)
@@ -76,24 +76,26 @@ const SQL_QUERIES = {
         insertRecipesIngredients: `
             INSERT INTO recipe_ingredients (recipe_id, ingredient_id, quantity)
             VALUES 
-                (1, 1, '50g'),  -- Oats
-                (1, 12, '30g'), -- Peanut Butter
-                (1, 13, '10g'), -- Crushed Peanuts
-                (1, 14, '5g'),  -- Chia Seeds
-                (1, 2, '200ml'), -- Milk
-                (1, 15, '50g'), -- Greek Yogurt
-                (2, 3, '200ml'), -- Kefir
-                (2, 4, '30g'),  -- Marshmallows
-                (3, 5, '100g'), -- Buckwheat
-                (3, 6, '1g'),   -- Carrot
-                (3, 7, '1g'),   -- Onion
-                (3, 8, '2g'),   -- Garlic
-                (3, 9, '100g'), -- Minced Meat
-                (3, 10, '50g'), -- Tomato Paste
-                (3, 11, '100g'), -- Rice
-                (3, 12, '100g'), -- Lentils
-                (4, 11, '100g'), -- Rice
-                (4, 12, '100g'); -- Lentils
+                (1, 1, 50),   -- Oats
+                (1, 12, 30g), -- Peanut Butter
+                (1, 13, 10),  -- Crushed Peanuts
+                (1, 14, 5g),  -- Chia Seeds
+                (1, 2, 200),  -- Milk
+                (1, 15, 50),  -- Greek Yogurt
+
+                (2, 3, 200),  -- Kefir
+                (2, 4, 50),   -- Marshmallows
+
+                (3, 5, 180),  -- Buckwheat
+                (3, 6, 330),  -- Carrot
+                (3, 7, 120),  -- Onion
+                (3, 8, 40),   -- Garlic
+                (3, 9, 100),  -- Minced Meat
+                (3, 10, 50),  -- Tomato Paste
+
+                (4, 11, 100), -- Rice
+                (4, 12, 100); -- Lentils
+                (4, 7, 120),  -- Onion
         `,
     },
     selectRecipes: {

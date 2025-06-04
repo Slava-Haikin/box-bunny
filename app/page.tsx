@@ -61,7 +61,7 @@ export default async function Home() {
                   <AccordionContent className="flex flex-col gap-4 text-balance">
                     <ol>
                       {meal.instructions.split(';').map((instruction, index) => (
-                          <li>
+                          <li key={instruction}>
                             {index + 1}
                             {'. '}
                             {instruction}

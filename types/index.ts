@@ -16,7 +16,8 @@ interface Recipe {
     id: string;
     title: string;
     description: string;
-    instructions: { instruction: string; illustration?: string }[];
+    // instructions: { instruction: string; illustration?: string }[];
+    instructions: string;
     meal: MEAL;
     difficulty: PREPARATION_DIFFICULTY;
     cookTime: number;
@@ -33,7 +34,7 @@ interface Ingredient {
     unit_short: string | null;
     unit_long: string | null;
     possible_units: string | null;
-    quantity: string;
+    quantity: number;
     estimated_cost_value: number | null;
     estimated_cost_unit: string | null;
     consistency: string | null;

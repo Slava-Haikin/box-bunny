@@ -5,9 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 import { cachedMealPlan, dataManager } from "@/db/managers";
+import { Recipe } from "@/types";
 
 export default async function Home() {
   const mealPlan = await cachedMealPlan()
+  const recipes: Recipe[] = Object.values(mealPlan)
   const groceryList = await dataManager.deriveGroceryList(mealPlan)
   const groceryListData = Object.entries(groceryList)
 
@@ -34,6 +36,8 @@ export default async function Home() {
                           {product.name.toUpperCase()}
                           {' / '}
                           {product.quantity}
+                          {' '}
+                          {product.unit}
                         </Label>
                       </li>
                     ))}
@@ -49,13 +53,22 @@ export default async function Home() {
               className="w-full"
               defaultValue={Object.values(mealPlan).at(0).id}
             >
-              {Object.values(mealPlan).map(meal => (
+              {recipes.map(meal => (
                 <AccordionItem value={meal.id} key={meal.id}>
                   <AccordionTrigger>
                     {meal.title}
                   </AccordionTrigger>
                   <AccordionContent className="flex flex-col gap-4 text-balance">
-                    {meal.instructions}
+                    <ol>
+                      {meal.instructions.split(';').map((instruction, index) => (
+                          <li>
+                            {index + 1}
+                            {'. '}
+                            {instruction}
+                          </li>
+                        )
+                      )}
+                    </ol>
                   </AccordionContent>
                 </AccordionItem>
               ))}

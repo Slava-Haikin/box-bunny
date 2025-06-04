@@ -77,9 +77,9 @@ const SQL_QUERIES = {
             INSERT INTO recipe_ingredients (recipe_id, ingredient_id, quantity)
             VALUES 
                 (1, 1, 50),   -- Oats
-                (1, 12, 30g), -- Peanut Butter
+                (1, 12, 30), -- Peanut Butter
                 (1, 13, 10),  -- Crushed Peanuts
-                (1, 14, 5g),  -- Chia Seeds
+                (1, 14, 5),  -- Chia Seeds
                 (1, 2, 200),  -- Milk
                 (1, 15, 50),  -- Greek Yogurt
 

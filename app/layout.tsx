@@ -14,9 +14,8 @@ import { Button } from "@/components/ui/button";
 
 import "./globals.css";
 import { Separator } from "@/components/ui/separator";
-import { MEAL, Recipe } from "@/types";
-import { cachedMealPlan, dataManager } from "@/db/managers";
-import { seedData } from "@/db";
+import { Recipe } from "@/types";
+import { cachedMealPlan } from "@/db/managers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,8 +37,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // await seedData()
-
   const mealPlan = await cachedMealPlan()
   const recipes: Recipe[] = Object.values(mealPlan)
 

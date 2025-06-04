@@ -1,7 +1,8 @@
-import { Ingredient, MEAL, MealPlan, Recipe } from "@/types";
+import { GroceryList, Ingredient, MEAL, MealPlan, Recipe } from "@/types";
 import { DatabaseConnector } from "../source/connector";
 import SQL_QUERIES from "../queries";
 import { db } from "../source";
+import { cache } from "react";
 
 class DataManager {
     constructor(private db: DatabaseConnector) {}
@@ -22,15 +23,24 @@ class DataManager {
         }
     }
 
-    async deriveGroceryList(mealPlan: MealPlan) {
+    async deriveGroceryList(mealPlan: MealPlan): Promise<GroceryList> {
         const ingredients = await Promise.all([
             this.deriveRecipeIngredients(mealPlan[MEAL.breakfast].id),
             this.deriveRecipeIngredients(mealPlan[MEAL.lunch].id),
             this.deriveRecipeIngredients(mealPlan[MEAL.snack].id),
             this.deriveRecipeIngredients(mealPlan[MEAL.supper].id),
         ])
+        const summarizedIngredients = this.summarizeIngredients(ingredients.flat())
 
-        const summarizedIngredients = ingredients.flat().reduce<Ingredient[]>((acc, ingredient) => {
+        return this.groupIngredientsByAisle(summarizedIngredients)
+    }
+
+    private deriveRecipeIngredients(recipeId: string): Promise<Ingredient[]>  {
+        return db.readData<Ingredient>(SQL_QUERIES.selectRecipeIngredients, [recipeId])
+    }
+
+    private summarizeIngredients(ingredients: Ingredient[]) {
+        return ingredients.reduce<Ingredient[]>((acc, ingredient) => {
             const index = acc.findIndex(item => item.id === ingredient.id);
             const isAlreadyExist = index >= 0;
 
@@ -47,27 +57,22 @@ class DataManager {
 
             return [...acc, ingredient]
         }, [])
+    }
 
-        const groupedIngredientsByAisle = summarizedIngredients.reduce((acc, ingredient) => {
-            const aisle = ingredient.aisle || "Uncategorized";
+    private groupIngredientsByAisle(ingredients: Ingredient[]) {
+        return ingredients.reduce<GroceryList>((acc, ingredient) => {
+            const aisle = ingredient.aisle || "Uncategorized"
+
             if (!acc[aisle]) {
-                acc[aisle] = [];
+                acc[aisle] = []
             }
-            acc[aisle].push(ingredient);
+
+            acc[aisle].push(ingredient)
+
             return acc;
-        }, {} as Record<string, Ingredient[]>);
-
-        return groupedIngredientsByAisle;
-    }
-
-    deriveCookingInstructions() {
-
-    }
-
-
-    private deriveRecipeIngredients(recipeId: string): Promise<Ingredient[]>  {
-        return db.readData<Ingredient>(SQL_QUERIES.selectRecipeIngredients, [recipeId])
+        }, {});
     }
 }
 
 export const dataManager = new DataManager(db);
+export const cachedMealPlan = cache(async () => dataManager.generateMealPlan());

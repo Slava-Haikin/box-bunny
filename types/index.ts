@@ -52,10 +52,13 @@ interface MealPlan {
     [MEAL.supper]: Recipe;
 }
 
+ type GroceryList = Record<string, Ingredient[]>
+
 export type {
     MealPlan,
     Recipe,
     Ingredient,
+    GroceryList,
 }
 
 export { MEAL };

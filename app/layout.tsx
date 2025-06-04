@@ -51,7 +51,7 @@ export default function RootLayout({
             </Link>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline">Week menu</Button>
+                <Button variant="outline">Meal plan</Button>
               </PopoverTrigger>
               <PopoverContent className="w-80">
                 <div className="grid gap-4">
@@ -75,7 +75,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
 
         <footer>
-          <Container className="text-center">A meal prep app.</Container>
+          <Container className="text-center">The easiest way to healthy life and sexy body.</Container>
         </footer>
       </body>
     </html>

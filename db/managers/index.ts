@@ -31,6 +31,7 @@ class DataManager {
             this.deriveRecipeIngredients(mealPlan[MEAL.supper].id),
         ])
         const summarizedIngredients = this.summarizeIngredients(ingredients.flat())
+        console.log(ingredients, summarizedIngredients);
 
         return this.groupIngredientsByAisle(summarizedIngredients)
     }

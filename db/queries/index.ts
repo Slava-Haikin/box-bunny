@@ -6,8 +6,8 @@ const SQL_QUERIES = {
                 title TEXT NOT NULL,                                                               -- Название рецепта
                 description TEXT NOT NULL,                                                         -- Описание рецепта
                 instructions TEXT NOT NULL,                                                        -- Инструкции по приготовлению рецепта
-                meal_type CHECK(meal_type IN ('breakfast', 'brunch', 'lunch', 'snack', 'dinner')), -- Тип блюда (например, завтрак, ужин)
-                difficulty TEXT CHECK(difficulty IN ('easy', 'medium', 'hard')),                     -- Сложность приготовления
+                meal CHECK(meal IN ('breakfast', 'brunch', 'lunch', 'snack', 'supper')),           -- Тип блюда (например, завтрак, ужин)
+                difficulty TEXT CHECK(difficulty IN ('easy', 'medium', 'hard')),                   -- Сложность приготовления
                 cook_time INTEGER,                                                                 -- Время на приготовление (в минутах)
                 servings INTEGER DEFAULT 1,                                                        -- Количество порций, по умолчанию 1
                 image_url TEXT,                                                                    -- Ссылка на изображение (опечатка в "iamge_url" на "image_url")
@@ -46,12 +46,12 @@ const SQL_QUERIES = {
             );
         `,
         insertRecipes: `
-            INSERT INTO recipes (title, description, instructions, meal_type, difficulty, cook_time, servings, image_url, tags)
+            INSERT INTO recipes (title, description, instructions, meal, difficulty, cook_time, servings, image_url, tags)
             VALUES 
                 ('Lazy Oatmeal', 'A simple and quick breakfast option.', '1. Add oats to a pot and boil it for 10 minutes. 2. Pour milk, add peanut butter and greek yoghurt. 3. Let sit overnight. 4. Add crushed peanuts and chia seeds (optionally)', 'breakfast', 'easy', 5, 1, 'oatmeal.jpg', 'vegetarian'),
-                ('Kefir with Marshmallows', 'A light snack for afternoon time.', '1. Pour kefir into a glass. 2. Add one marshmallow.', 'brunch', 'easy', 2, 1, 'kefir.jpg', 'vegetarian'),
+                ('Kefir with Marshmallows', 'A light snack for afternoon time.', '1. Pour kefir into a glass. 2. Add one marshmallow.', 'snack', 'easy', 2, 1, 'kefir.jpg', 'vegetarian'),
                 ('Buckwheat with Carrots, Onions, Garlic, Ground Chicken Meat, and Tomato Paste', 'A nutritious lunch option with buckwheat and vegetables.', '1. Boil buckwheat. 2. Sauté carrots, onions, and garlic. 3. Add ground chicken meat and tomato paste, add salt, pepper. 4. Combine with buckwheat.', 'lunch', 'medium', 30, 2, 'buckwheat.jpg', 'gluten free'),
-                ('Mujaddara (Rice with Lentils)', 'A healthy dinner option with rice and lentils.', '1. Boil rice and lentils. 2. Fry onions. 3. Combine with rice and lentils.', 'dinner', 'medium', 40, 2, 'mujaddara.jpg', 'vegan');
+                ('Mujaddara (Rice with Lentils)', 'A healthy dinner option with rice and lentils.', '1. Boil rice and lentils. 2. Fry onions. 3. Combine with rice and lentils.', 'supper', 'medium', 40, 2, 'mujaddara.jpg', 'vegan');
         `,
         insertIngredients: `
             INSERT INTO ingredients (original, name, unit, unit_short, unit_long, possible_units, estimated_cost_value, estimated_cost_unit, consistency, shopping_list_units, aisle, image_url)
@@ -95,7 +95,33 @@ const SQL_QUERIES = {
                 (4, 11, '100g'), -- Rice
                 (4, 12, '100g'); -- Lentils
         `,
-    }
+    },
+    selectRecipes: {
+        all: `
+            SELECT * FROM recipes;
+        `,
+        breakfasts: `
+            SELECT * FROM recipes WHERE meal = 'breakfast';
+        `,
+        brunch: `
+            SELECT * FROM recipes WHERE meal = 'brunch';
+        `,
+        lunchs: `
+            SELECT * FROM recipes WHERE meal = 'lunch';
+        `,
+        snacks: `
+            SELECT * FROM recipes WHERE meal = 'snack';
+        `,
+        suppers: `
+            SELECT * FROM recipes WHERE meal = 'supper';
+        `,
+    },
+    selectRecipeIngredients: `
+        SELECT * FROM ingredients
+        INNER JOIN recipe_ingredients
+        ON ingredients.id = recipe_ingredients.ingredient_id
+        WHERE recipe_ingredients.recipe_id = ?
+    `,
 }
 
 export default SQL_QUERIES;

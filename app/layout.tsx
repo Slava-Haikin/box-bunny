@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button";
 
 import "./globals.css";
 import { Separator } from "@/components/ui/separator";
-import { MEAL } from "@/types";
+import { MEAL, Recipe } from "@/types";
+import { dataManager } from "@/db/managers/data-managers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +32,17 @@ export const metadata: Metadata = {
   description: "Keep it tight - keep health right!",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const mealPlan = await dataManager.generateMealPlan();
+  const recipes: Recipe[] = Object.values(mealPlan);
+  const ingredients = await dataManager.deriveGroceryList(mealPlan);
+
+  console.log(ingredients);
+
   return (
     <html lang="en">
       <body
@@ -56,21 +63,19 @@ export default function RootLayout({
                 <Button variant="outline">Meal plan</Button>
               </PopoverTrigger>
               <PopoverContent className="w-80">
-                {Object.values(MEAL)
-                  .filter((meal) => typeof meal === "string")
-                  .map((meal) => {
+                {recipes.map((recipe) => {
                     return (
-                      <div key={meal}>
+                      <div key={recipe.id}>
                         <div className="grid gap-3 py-2">
                           <div className="space-y-2">
-                            <h4 className="leading-none font-medium">{`${meal.at(0)?.toUpperCase()}${meal.slice(1)}`}</h4>
-                            <div className="grid grid-cols-3 items-center gap-4">
-                              Title
+                            <h4 className="leading-none font-medium">{`${recipe.meal}`.toUpperCase()}</h4>
+                            <div className="grid items-center gap-4">
+                              {recipe.title}
                             </div>
                           </div>
                           <div className="grid gap-2">
                             <p className="text-muted-foreground text-sm">
-                              Description
+                              {recipe.description}
                             </p>
                           </div>
                         </div>

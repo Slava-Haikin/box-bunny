@@ -2,6 +2,7 @@ import sqlite3 from 'sqlite3';
 import { open, Database } from 'sqlite';
 import { existsSync, mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { Recipe } from '@/types';
 
 export class DatabaseConnector {
     private db: Database | null = null;
@@ -62,7 +63,7 @@ export class DatabaseConnector {
         }
     }
 
-    async readData(query: string, params: string[] = []): Promise<string[]> {
+    async readData<T>(query: string, params: string[] = []): Promise<T[]> {
         try {
             const db = await this.openConnection();
             const rows = await db.all(query, ...params);

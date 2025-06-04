@@ -33,6 +33,7 @@ interface Ingredient {
     unit_short: string | null;
     unit_long: string | null;
     possible_units: string | null;
+    quantity: string;
     estimated_cost_value: number | null;
     estimated_cost_unit: string | null;
     consistency: string | null;

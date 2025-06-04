@@ -1,6 +1,6 @@
-import { DatabaseConnector } from "./db-connector";
+import { DatabaseConnector } from "./connector";
 
-const db = new DatabaseConnector('mealprep');
+const db = new DatabaseConnector('mealprep.db');
 
 export { 
     DatabaseConnector,

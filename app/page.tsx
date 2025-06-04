@@ -1,7 +1,10 @@
 import { Container } from "@/components/ui/container";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { seedData } from "@/db";
 
-export default function Home() {
+export default async function Home() {
+  // await seedData();
+
   return (
     <Container>
       <div className="flex w-full flex-col gap-6 items-center">

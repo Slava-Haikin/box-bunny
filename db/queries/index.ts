@@ -9,7 +9,7 @@ const SQL_QUERIES = {
                 meal_type CHECK(meal_type IN ('breakfast', 'brunch', 'lunch', 'snack', 'dinner')), -- Тип блюда (например, завтрак, ужин)
                 cook_time INTEGER,                                                                 -- Время на приготовление (в минутах)
                 servings INTEGER DEFAULT 1,                                                        -- Количество порций, по умолчанию 1
-                iamge_url TEXT,                                                                    -- Ссылка на изображение (опечатка в "iamge_url" на "image_url")
+                image_url TEXT,                                                                    -- Ссылка на изображение (опечатка в "iamge_url" на "image_url")
                 tags TEXT CHECK(tags IN ('gluten free', 'vegetarian', 'vegan')),                   -- Теги для рецепта (например, "gluten free", "vegetarian")
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,                                     -- Дата создания рецепта
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP                                      -- Дата последнего обновления рецепта

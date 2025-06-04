@@ -1,15 +1,31 @@
 import sqlite3 from 'sqlite3';
 import { open, Database } from 'sqlite';
+import { existsSync, mkdirSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
 export class DatabaseConnector {
     private db: Database | null = null;
+    private dbPath: string;
 
-    constructor(private path: string) {}
+    constructor(private filename: string) {
+        this.dbPath = resolve('@/', 'db', 'source', this.filename);
+
+        const dbDir = join('@/', 'db', 'source');
+
+        if (!existsSync(dbDir)) {
+            mkdirSync(dbDir, { recursive: true });
+            console.log('Папка db/source была создана');
+        }
+    }
 
     async checkConnection(): Promise<boolean> {
+        if (!existsSync(this.dbPath)) {
+            console.info('База данных не существует, будет создана новая');
+        }
+
         try {
             const db = await open({
-                filename: this.path,
+                filename: this.dbPath,
                 driver: sqlite3.Database
             })
 
@@ -27,7 +43,7 @@ export class DatabaseConnector {
     private async openConnection(): Promise<Database> {
         if (!this.db) {
             this.db = await open({
-                filename: this.path,
+                filename: this.dbPath,
                 driver: sqlite3.Database
             });
         }

@@ -8,9 +8,9 @@ export class DatabaseConnector {
     private dbPath: string;
 
     constructor(private filename: string) {
-        this.dbPath = resolve('@/', 'db', 'source', this.filename);
+        this.dbPath = resolve('./', 'db', 'source', this.filename);
 
-        const dbDir = join('@/', 'db', 'source');
+        const dbDir = join('./', 'db', 'source');
 
         if (!existsSync(dbDir)) {
             mkdirSync(dbDir, { recursive: true });

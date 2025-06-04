@@ -3,7 +3,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { seedData } from "@/db";
 
 export default async function Home() {
-  // await seedData();
+  await seedData();
 
   return (
     <Container>

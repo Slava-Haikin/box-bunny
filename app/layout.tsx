@@ -13,6 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 import "./globals.css";
+import { Separator } from "@/components/ui/separator";
+import { MEAL } from "@/types";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,19 +56,28 @@ export default function RootLayout({
                 <Button variant="outline">Meal plan</Button>
               </PopoverTrigger>
               <PopoverContent className="w-80">
-                <div className="grid gap-4">
-                  <div className="space-y-2">
-                    <h4 className="leading-none font-medium">Dimensions</h4>
-                    <p className="text-muted-foreground text-sm">
-                      Set the dimensions for the layer.
-                    </p>
-                  </div>
-                  <div className="grid gap-2">
-                    <div className="grid grid-cols-3 items-center gap-4">
-                      123
-                    </div>
-                  </div>
-                </div>
+                {Object.values(MEAL)
+                  .filter((meal) => typeof meal === "string")
+                  .map((meal) => {
+                    return (
+                      <div key={meal}>
+                        <div className="grid gap-3 py-2">
+                          <div className="space-y-2">
+                            <h4 className="leading-none font-medium">{`${meal.at(0)?.toUpperCase()}${meal.slice(1)}`}</h4>
+                            <div className="grid grid-cols-3 items-center gap-4">
+                              Title
+                            </div>
+                          </div>
+                          <div className="grid gap-2">
+                            <p className="text-muted-foreground text-sm">
+                              Description
+                            </p>
+                          </div>
+                        </div>
+                        <Separator />
+                      </div>
+                    );
+                  })}
               </PopoverContent>
             </Popover>
           </Container>

@@ -7,6 +7,7 @@ const SQL_QUERIES = {
                 description TEXT NOT NULL,                                                         -- Описание рецепта
                 instructions TEXT NOT NULL,                                                        -- Инструкции по приготовлению рецепта
                 meal_type CHECK(meal_type IN ('breakfast', 'brunch', 'lunch', 'snack', 'dinner')), -- Тип блюда (например, завтрак, ужин)
+                difficulty TEXT CHECK(difficulty IN ('easy', 'medium', 'hard')),                     -- Сложность приготовления
                 cook_time INTEGER,                                                                 -- Время на приготовление (в минутах)
                 servings INTEGER DEFAULT 1,                                                        -- Количество порций, по умолчанию 1
                 image_url TEXT,                                                                    -- Ссылка на изображение (опечатка в "iamge_url" на "image_url")
@@ -20,7 +21,6 @@ const SQL_QUERIES = {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,          -- Уникальный идентификатор
                 original TEXT NOT NULL,                        -- Оригинальное имя (например, "pineapples")
                 name TEXT NOT NULL,                            -- Название ингредиента
-                amount REAL,                                   -- Количество
                 unit TEXT,                                     -- Единица измерения
                 unit_short TEXT,                               -- Краткая единица измерения
                 unit_long TEXT,                                -- Полная единица измерения
@@ -46,42 +46,54 @@ const SQL_QUERIES = {
             );
         `,
         insertRecipes: `
-            INSERT INTO recipes (title, description, instructions, meal_type, cook_time, servings, image_url, tags)
+            INSERT INTO recipes (title, description, instructions, meal_type, difficulty, cook_time, servings, image_url, tags)
             VALUES 
-                ('Lazy Oatmeal', 'A simple and quick breakfast option.', '1. Add oats to a bowl. 2. Pour milk. 3. Let sit overnight.', 'breakfast', 5, 1, 'oatmeal.jpg', 'vegetarian'),
-                ('Kefir with Marshmallows', 'A light snack for afternoon time.', '1. Pour kefir into a glass. 2. Add marshmallows.', 'brunch', 2, 1, 'kefir.jpg', 'vegetarian'),
-                ('Buckwheat with Carrots, Onions, Garlic, Ground Chicken Meat, and Tomato Paste', 'A nutritious lunch option with buckwheat and vegetables.', '1. Boil buckwheat. 2. Sauté carrots, onions, and garlic. 3. Add ground chicken meat and tomato paste. 4. Combine with buckwheat.', 'lunch', 30, 2, 'buckwheat.jpg', 'gluten free'),
-                ('Mujaddara (Rice with Lentils)', 'A healthy dinner option with rice and lentils.', '1. Boil rice and lentils. 2. Fry onions. 3. Combine with rice and lentils.', 'dinner', 40, 2, 'mujaddara.jpg', 'vegan');
+                ('Lazy Oatmeal', 'A simple and quick breakfast option.', '1. Add oats to a pot and boil it for 10 minutes. 2. Pour milk, add peanut butter and greek yoghurt. 3. Let sit overnight. 4. Add crushed peanuts and chia seeds (optionally)', 'breakfast', 'easy', 5, 1, 'oatmeal.jpg', 'vegetarian'),
+                ('Kefir with Marshmallows', 'A light snack for afternoon time.', '1. Pour kefir into a glass. 2. Add one marshmallow.', 'brunch', 'easy', 2, 1, 'kefir.jpg', 'vegetarian'),
+                ('Buckwheat with Carrots, Onions, Garlic, Ground Chicken Meat, and Tomato Paste', 'A nutritious lunch option with buckwheat and vegetables.', '1. Boil buckwheat. 2. Sauté carrots, onions, and garlic. 3. Add ground chicken meat and tomato paste, add salt, pepper. 4. Combine with buckwheat.', 'lunch', 'medium', 30, 2, 'buckwheat.jpg', 'gluten free'),
+                ('Mujaddara (Rice with Lentils)', 'A healthy dinner option with rice and lentils.', '1. Boil rice and lentils. 2. Fry onions. 3. Combine with rice and lentils.', 'dinner', 'medium', 40, 2, 'mujaddara.jpg', 'vegan');
         `,
         insertIngredients: `
-            INSERT INTO ingredients (original, name, amount, unit, unit_short, unit_long, possible_units, estimated_cost_value, estimated_cost_unit, consistency, shopping_list_units, aisle, image_url)
+            INSERT INTO ingredients (original, name, unit, unit_short, unit_long, possible_units, estimated_cost_value, estimated_cost_unit, consistency, shopping_list_units, aisle, image_url)
             VALUES 
-                ('oats', 'oats', 50, 'g', 'g', 'grams', '["g", "cup"]', 100, 'US Cents', 'solid', '["g"]', 'Grocery', 'oats.jpg'),
-                ('kefir', 'kefir', 200, 'ml', 'ml', 'milliliters', '["ml", "cup"]', 50, 'US Cents', 'liquid', '["ml"]', 'Dairy', 'kefir.jpg'),
-                ('marshmallows', 'marshmallows', 30, 'g', 'g', 'grams', '["g", "piece"]', 80, 'US Cents', 'solid', '["g"]', 'Sweets', 'marshmallows.jpg'),
-                ('buckwheat', 'buckwheat', 100, 'g', 'g', 'grams', '["g", "cup"]', 150, 'US Cents', 'solid', '["g"]', 'Grocery', 'buckwheat.jpg'),
-                ('carrot', 'carrot', 1, 'g', 'g', 'grams', '["g"]', 40, 'US Cents', 'solid', '["g"]', 'Produce', 'carrot.jpg'),
-                ('onion', 'onion', 1, 'g', 'g', 'grams', '["g"]', 30, 'US Cents', 'solid', '["g"]', 'Produce', 'onion.jpg'),
-                ('garlic', 'garlic', 2, 'g', 'g', 'grams', '["g"]', 10, 'US Cents', 'solid', '["g"]', 'Produce', 'garlic.jpg'),
-                ('minced_meat', 'minced meat', 100, 'g', 'g', 'grams', '["g"]', 250, 'US Cents', 'solid', '["g"]', 'Meat', 'minced_meat.jpg'),
-                ('tomato_paste', 'tomato paste', 50, 'g', 'g', 'grams', '["g"]', 40, 'US Cents', 'solid', '["g"]', 'Grocery', 'tomato_paste.jpg'),
-                ('rice', 'rice', 100, 'g', 'g', 'grams', '["g", "cup"]', 100, 'US Cents', 'solid', '["g"]', 'Grocery', 'rice.jpg'),
-                ('lentils', 'lentils', 100, 'g', 'g', 'grams', '["g", "cup"]', 150, 'US Cents', 'solid', '["g"]', 'Grocery', 'lentils.jpg');
-        `,
+                ('oats', 'oats', 'g', 'g', 'grams', '["g", "cup"]', 100, 'US Cents', 'solid', '["g"]', 'Grocery', 'oats.jpg'),
+                ('milk', 'milk', 'ml', 'ml', 'milliliters', '["ml", "cup"]', 50, 'US Cents', 'liquid', '["ml"]', 'Dairy', 'kefir.jpg'),
+                ('kefir', 'kefir', 'ml', 'ml', 'milliliters', '["ml", "cup"]', 50, 'US Cents', 'liquid', '["ml"]', 'Dairy', 'kefir.jpg'),
+                ('marshmallows', 'marshmallows', 'g', 'g', 'grams', '["g", "piece"]', 80, 'US Cents', 'solid', '["g"]', 'Sweets', 'marshmallows.jpg'),
+                ('buckwheat', 'buckwheat', 'g', 'g', 'grams', '["g", "cup"]', 150, 'US Cents', 'solid', '["g"]', 'Grocery', 'buckwheat.jpg'),
+                ('carrot', 'carrot', 'g', 'g', 'grams', '["g"]', 40, 'US Cents', 'solid', '["g"]', 'Produce', 'carrot.jpg'),
+                ('onion', 'onion', 'g', 'g', 'grams', '["g"]', 30, 'US Cents', 'solid', '["g"]', 'Produce', 'onion.jpg'),
+                ('garlic', 'garlic', 'g', 'g', 'grams', '["g"]', 10, 'US Cents', 'solid', '["g"]', 'Produce', 'garlic.jpg'),
+                ('minced_meat', 'minced meat', 'g', 'g', 'grams', '["g"]', 250, 'US Cents', 'solid', '["g"]', 'Meat', 'minced_meat.jpg'),
+                ('tomato_paste', 'tomato paste', 'g', 'g', 'grams', '["g"]', 40, 'US Cents', 'solid', '["g"]', 'Grocery', 'tomato_paste.jpg'),
+                ('rice', 'rice', 'g', 'g', 'grams', '["g", "cup"]', 100, 'US Cents', 'solid', '["g"]', 'Grocery', 'rice.jpg'),
+                ('lentils', 'lentils', 'g', 'g', 'grams', '["g", "cup"]', 150, 'US Cents', 'solid', '["g"]', 'Grocery', 'lentils.jpg'),
+                ('peanut_butter', 'peanut butter', 'g', 'g', 'grams', '["g"]', 150, 'US Cents', 'solid', '["g"]', 'Grocery', 'peanut_butter.jpg'),
+                ('greek_yogurt', 'greek yogurt', 'g', 'g', 'grams', '["g"]', 120, 'US Cents', 'solid', '["g"]', 'Dairy', 'greek_yogurt.jpg'),
+                ('crushed_peanuts', 'crushed peanuts', 'g', 'g', 'grams', '["g"]', 200, 'US Cents', 'solid', '["g"]', 'Grocery', 'crushed_peanuts.jpg'),
+                ('chia_seeds', 'chia seeds', 'g', 'g', 'grams', '["g"]', 250, 'US Cents', 'solid', '["g"]', 'Grocery', 'chia_seeds.jpg');
+            `,
         insertRecipesIngredients: `
             INSERT INTO recipe_ingredients (recipe_id, ingredient_id, quantity)
             VALUES 
-                (1, 1, '50g'), 
-                (2, 2, '200ml'),
-                (2, 3, '30g'),
-                (3, 4, '100g'),
-                (3, 5, '1g'),
-                (3, 6, '1g'),
-                (3, 7, '2g'),
-                (3, 8, '100g'),
-                (3, 9, '50g'),
-                (4, 10, '100g'),
-                (4, 11, '100g');
+                (1, 1, '50g'),  -- Oats
+                (1, 12, '30g'), -- Peanut Butter
+                (1, 13, '10g'), -- Crushed Peanuts
+                (1, 14, '5g'),  -- Chia Seeds
+                (1, 2, '200ml'), -- Milk
+                (1, 15, '50g'), -- Greek Yogurt
+                (2, 3, '200ml'), -- Kefir
+                (2, 4, '30g'),  -- Marshmallows
+                (3, 5, '100g'), -- Buckwheat
+                (3, 6, '1g'),   -- Carrot
+                (3, 7, '1g'),   -- Onion
+                (3, 8, '2g'),   -- Garlic
+                (3, 9, '100g'), -- Minced Meat
+                (3, 10, '50g'), -- Tomato Paste
+                (3, 11, '100g'), -- Rice
+                (3, 12, '100g'), -- Lentils
+                (4, 11, '100g'), -- Rice
+                (4, 12, '100g'); -- Lentils
         `,
     }
 }

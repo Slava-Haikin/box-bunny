@@ -14,7 +14,7 @@ export class DatabaseConnector {
 
         if (!existsSync(dbDir)) {
             mkdirSync(dbDir, { recursive: true });
-            console.log('Folder db/source was created');
+            console.info('Folder db/source was created');
         }
     }
 

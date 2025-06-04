@@ -14,13 +14,13 @@ export class DatabaseConnector {
 
         if (!existsSync(dbDir)) {
             mkdirSync(dbDir, { recursive: true });
-            console.log('Папка db/source была создана');
+            console.log('Folder db/source was created');
         }
     }
 
     async checkConnection(): Promise<boolean> {
         if (!existsSync(this.dbPath)) {
-            console.info('База данных не существует, будет создана новая');
+            console.info('Database does not exist, it will be created');
         }
 
         try {

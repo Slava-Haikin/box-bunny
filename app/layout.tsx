@@ -16,7 +16,6 @@ import "./globals.css";
 import { Separator } from "@/components/ui/separator";
 import { Recipe } from "@/types";
 import { cachedMealPlan } from "@/db/managers";
-import { seedData } from "@/db";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,15 +37,17 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const mealPlan = await cachedMealPlan()
-  const recipes: Recipe[] = Object.values(mealPlan)
+  const mealPlan = await cachedMealPlan();
+  const recipes: Recipe[] = Object.values(mealPlan);
 
   return (
     <html lang="en" className="w-[100vw] overflow-x-hidden">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
-        <div className={`${geistSans.variable} ${geistMono.variable} antialiased flex min-h-screen flex-col`}>
+        <div
+          className={`${geistSans.variable} ${geistMono.variable} antialiased flex min-h-screen flex-col`}
+        >
           <header>
             <Container className="flex justify-between">
               <Link href={"/"} className="block w-fit">
@@ -63,25 +64,27 @@ export default async function RootLayout({
                 </PopoverTrigger>
                 <PopoverContent className="w-80">
                   {recipes.map((recipe) => {
-                      return (
-                        <div key={recipe.id}>
-                          <div className="grid gap-3 py-2">
-                            <div className="space-y-2">
-                              <h4 className="leading-none font-medium">{`${recipe.meal}`.toUpperCase()}</h4>
-                              <div className="grid items-center gap-4">
-                                {recipe.title}
-                              </div>
-                            </div>
-                            <div className="grid gap-2">
-                              <p className="text-muted-foreground text-sm">
-                                {recipe.description}
-                              </p>
+                    return (
+                      <div key={recipe.id}>
+                        <div className="grid gap-3 py-2">
+                          <div className="space-y-2">
+                            <h4 className="leading-none font-medium">
+                              {`${recipe.meal}`.toUpperCase()}
+                            </h4>
+                            <div className="grid items-center gap-4">
+                              {recipe.title}
                             </div>
                           </div>
-                          <Separator />
+                          <div className="grid gap-2">
+                            <p className="text-muted-foreground text-sm">
+                              {recipe.description}
+                            </p>
+                          </div>
                         </div>
-                      );
-                    })}
+                        <Separator />
+                      </div>
+                    );
+                  })}
                 </PopoverContent>
               </Popover>
             </Container>

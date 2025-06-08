@@ -1,4 +1,9 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Container } from "@/components/ui/container";
 import { Label } from "@/components/ui/label";
@@ -8,10 +13,10 @@ import { cachedMealPlan, dataManager } from "@/db/managers";
 import { Recipe } from "@/types";
 
 export default async function Home() {
-  const mealPlan = await cachedMealPlan()
-  const recipes: Recipe[] = Object.values(mealPlan)
-  const groceryList = await dataManager.deriveGroceryList(mealPlan)
-  const groceryListData = Object.entries(groceryList)
+  const mealPlan = await cachedMealPlan();
+  const recipes: Recipe[] = Object.values(mealPlan);
+  const groceryList = await dataManager.deriveGroceryList(mealPlan);
+  const groceryListData = Object.entries(groceryList);
 
   return (
     <Container>
@@ -29,18 +34,19 @@ export default async function Home() {
                     {aisle}
                   </h2>
                   <ul className="grid grid-cols-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-4 p-2">
-                    {products.map(product => (
+                    {products.map((product) => (
                       <li key={product.id}>
-                          <Label htmlFor={product.id} className="border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 w-full justify-start">
-                            <Checkbox id={product.id} />
-                            <span>
-                              {product.name.toUpperCase()}
-                              {' / '}
-                              {product.quantity}
-                              {' '}
-                              {product.unit}
-                            </span>
-                          </Label>
+                        <Label
+                          htmlFor={product.id}
+                          className="border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 w-full justify-start"
+                        >
+                          <Checkbox id={product.id} />
+                          <span>
+                            {product.name.toUpperCase()}
+                            {" / "}
+                            {product.quantity} {product.unit}
+                          </span>
+                        </Label>
                       </li>
                     ))}
                   </ul>
@@ -55,21 +61,20 @@ export default async function Home() {
               className="w-full"
               defaultValue={Object.values(mealPlan).at(0).id}
             >
-              {recipes.map(meal => (
+              {recipes.map((meal) => (
                 <AccordionItem value={meal.id} key={meal.id}>
-                  <AccordionTrigger>
-                    {meal.title}
-                  </AccordionTrigger>
+                  <AccordionTrigger>{meal.title}</AccordionTrigger>
                   <AccordionContent className="flex flex-col gap-4 text-balance">
                     <ol>
-                      {meal.instructions.split(';').map((instruction, index) => (
+                      {meal.instructions
+                        .split(";")
+                        .map((instruction, index) => (
                           <li key={instruction}>
                             {index + 1}
-                            {'. '}
+                            {". "}
                             {instruction}
                           </li>
-                        )
-                      )}
+                        ))}
                     </ol>
                   </AccordionContent>
                 </AccordionItem>

@@ -28,17 +28,19 @@ export default async function Home() {
                   <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                     {aisle}
                   </h2>
-                  <ul className="grid grid-cols-auto gap-6 py-4 p-2">
+                  <ul className="grid grid-cols-auto sm:grid-cols-2 gap-6 py-4 p-2">
                     {products.map(product => (
-                      <li className="flex items-center gap-3" key={product.id}>
-                        <Checkbox id={product.id} />
-                        <Label htmlFor={product.id}>
-                          {product.name.toUpperCase()}
-                          {' / '}
-                          {product.quantity}
-                          {' '}
-                          {product.unit}
-                        </Label>
+                      <li key={product.id}>
+                          <Label htmlFor={product.id} className="border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 w-full justify-start">
+                            <Checkbox id={product.id} />
+                            <span>
+                              {product.name.toUpperCase()}
+                              {' / '}
+                              {product.quantity}
+                              {' '}
+                              {product.unit}
+                            </span>
+                          </Label>
                       </li>
                     ))}
                   </ul>

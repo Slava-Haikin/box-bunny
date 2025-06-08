@@ -3,6 +3,7 @@ import { DatabaseConnector } from "../source/connector";
 import SQL_QUERIES from "../queries";
 import { db } from "../source";
 import { cache } from "react";
+import { MENU_DURATION_IN_DAYS } from "@/constants";
 
 class DataManager {
     constructor(private db: DatabaseConnector) {}
@@ -40,7 +41,7 @@ class DataManager {
     }
 
     private summarizeIngredients(ingredients: Ingredient[]) {
-        return ingredients.reduce<Ingredient[]>((acc, ingredient) => {
+        const ingredientsForOneDay = ingredients.reduce<Ingredient[]>((acc, ingredient) => {
             const index = acc.findIndex(item => item.id === ingredient.id);
             const isAlreadyExist = index >= 0;
 
@@ -57,6 +58,8 @@ class DataManager {
 
             return [...acc, ingredient]
         }, [])
+
+        return ingredientsForOneDay.map(ingredient => ({...ingredient, quantity: ingredient.quantity * MENU_DURATION_IN_DAYS }))
     }
 
     private groupIngredientsByAisle(ingredients: Ingredient[]) {

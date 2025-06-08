@@ -70,7 +70,7 @@ const SQL_QUERIES = {
                 ('lentils', 'lentils', 'g', 'g', 'grams', '["g", "cup"]', 150, 'US Cents', 'solid', '["g"]', 'Grocery', 'lentils.jpg'),
                 ('peanut_butter', 'peanut butter', 'g', 'g', 'grams', '["g"]', 150, 'US Cents', 'solid', '["g"]', 'Grocery', 'peanut_butter.jpg'),
                 ('greek_yogurt', 'greek yogurt', 'g', 'g', 'grams', '["g"]', 120, 'US Cents', 'solid', '["g"]', 'Dairy', 'greek_yogurt.jpg'),
-                ('crushed_peanuts', 'crushed peanuts', 'g', 'g', 'grams', '["g"]', 200, 'US Cents', 'solid', '["g"]', 'Grocery', 'crushed_peanuts.jpg'),
+                ('peanuts', 'peanuts', 'g', 'g', 'grams', '["g"]', 200, 'US Cents', 'solid', '["g"]', 'Grocery', 'peanuts.jpg'),
                 ('chia_seeds', 'chia seeds', 'g', 'g', 'grams', '["g"]', 250, 'US Cents', 'solid', '["g"]', 'Grocery', 'chia_seeds.jpg');
             `,
         insertRecipesIngredients: `
@@ -78,10 +78,10 @@ const SQL_QUERIES = {
             VALUES 
                 (1, 1, 50),   -- Oats
                 (1, 12, 30),  -- Peanut Butter
-                (1, 13, 10),  -- Crushed Peanuts
-                (1, 14, 5),   -- Chia Seeds
+                (1, 15, 10),  -- Peanuts
+                (1, 16, 5),   -- Chia Seeds
                 (1, 2, 200),  -- Milk
-                (1, 15, 50),  -- Greek Yogurt
+                (1, 14, 50),  -- Greek Yogurt
 
                 (2, 3, 200),  -- Kefir
                 (2, 4, 50),   -- Marshmallows

@@ -1,7 +1,7 @@
 import { GroceryList, Ingredient, MEAL, MealPlan, Recipe } from "@/types";
-import { DatabaseConnector } from "../source/connector";
-import SQL_QUERIES from "../queries";
-import { db } from "../source";
+import { DatabaseConnector } from "../old/source/connectortor";
+import SQL_QUERIES from "../old/queriesies";
+import { db } from "../old/source";
 import { cache } from "react";
 import { MENU_DURATION_IN_DAYS } from "@/constants";
 

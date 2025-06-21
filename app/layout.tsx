@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import "./globals.css";
 import { Separator } from "@/components/ui/separator";
 import { Recipe } from "@/types";
-import { cachedMealPlan } from "@/db/managers";
+import { cachedMealPlan } from "@/db/old/managers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

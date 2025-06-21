@@ -1,4 +1,4 @@
-enum PREPARATION_DIFFICULTY {
+enum COOKING_DIFFICULTY {
     easy,
     medium,
     hard,
@@ -12,14 +12,19 @@ enum MEAL {
     supper,
 }
 
+enum RecipeTag {
+  GLUTEN_FREE = 'gluten free',
+  VEGETARIAN = 'vegetarian',
+  VEGAN = 'vegan',
+}
+
 interface Recipe {
     id: string;
     title: string;
     description: string;
-    // instructions: { instruction: string; illustration?: string }[];
-    instructions: string;
+    instructions: string[];
     meal: MEAL;
-    difficulty: PREPARATION_DIFFICULTY;
+    difficulty: COOKING_DIFFICULTY;
     cookTime: number;
     servings: number;
     imageUrl: string;
@@ -62,4 +67,4 @@ export type {
     GroceryList,
 }
 
-export { MEAL };
+export { MEAL, COOKING_DIFFICULTY, RecipeTag };

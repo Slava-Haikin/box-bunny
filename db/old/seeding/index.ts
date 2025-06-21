@@ -1,5 +1,5 @@
 import { DatabaseConnector, db } from "../source"
-import SQL_QUERIES from "../queries"
+import SQL_QUERIES from "../../queries"
 
 let seeded = false
 

@@ -9,7 +9,7 @@ import { Container } from "@/components/ui/container";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-import { cachedMealPlan, dataManager } from "@/old_db/managers";
+import { cachedMealPlan, dataManager } from "@/data";
 import { Recipe } from "@/types/index";
 
 export default async function Home() {

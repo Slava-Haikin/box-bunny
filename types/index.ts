@@ -30,7 +30,7 @@ enum RecipeTag {
   VEGAN = 'vegan',
 }
 
-type Ingredient =  typeof ingredientsTable.$inferSelect & { quantity?: number };
+type Ingredient =  typeof ingredientsTable.$inferSelect;
 type Recipe = typeof recipesTable.$inferSelect;
 
 interface MealPlan {

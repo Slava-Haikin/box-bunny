@@ -1,10 +1,14 @@
+import { cache } from "react";
+
+import { db } from "./db";
+import config from "@/config";
+import { NodePgClient, NodePgDatabase } from "drizzle-orm/node-postgres";
 import { GroceryList, Ingredient, MEAL, MealPlan, Recipe } from "@/types/index";
 
-import { cache } from "react";
-import config from "@/config";
-
 class DataManager {
-    constructor(private db: DatabaseConnector) {}
+    constructor(private db: NodePgDatabase<Record<string, never>> & {
+        $client: NodePgClient;
+    }) {}
 
     async generateMealPlan(): Promise<MealPlan> {
         const data = await Promise.all([

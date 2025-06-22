@@ -3,9 +3,9 @@ import { COOKING_DIFFICULTY, MEAL, RecipeTag, USER_ROLES } from "@/types/index";
 import { integer, pgTable, varchar, pgEnum, timestamp, text, numeric } from "drizzle-orm/pg-core";
 
 const timestamps = {
-  updated_at: timestamp(),
-  created_at: timestamp().defaultNow().notNull(),
-  deleted_at: timestamp(),
+  updatedAt: timestamp(),
+  createdAt: timestamp().defaultNow().notNull(),
+  deletedAt: timestamp(),
 }
 
 export const roleEnum = pgEnum('role', enumToPgEnum(USER_ROLES));

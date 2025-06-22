@@ -1,8 +1,8 @@
-import { ingredientsTable, recipesTable } from "@/db/schema";
+import { ingredientsTable, recipesTable } from "@/data/db/schema";
 
 export type Configuration = {
   dbUrl: string;
-  ownerName: string;
+  ownerFirstName: string;
   ownerLastName: string;
   ownerEmail: string;
   ownerHashedPassword: string;

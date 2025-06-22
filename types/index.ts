@@ -1,5 +1,15 @@
 import { ingredientsTable, recipesTable } from "@/db/schema";
 
+export type Configuration = {
+  dbUrl: string;
+  ownerName: string;
+  ownerLastName: string;
+  ownerEmail: string;
+  ownerHashedPassword: string;
+  menuDurationInDays: number;
+  rootDir: string;
+};
+
 enum COOKING_DIFFICULTY {
     easy = 'easy',
     medium = 'medium',

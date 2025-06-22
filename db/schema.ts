@@ -1,5 +1,5 @@
 import { enumToPgEnum } from "@/lib/utils";
-import { COOKING_DIFFICULTY, MEAL, RecipeTag, USER_ROLES } from "@/types";
+import { COOKING_DIFFICULTY, MEAL, RecipeTag, USER_ROLES } from "@/types/index";
 import { integer, pgTable, varchar, pgEnum, timestamp, text, numeric } from "drizzle-orm/pg-core";
 
 const timestamps = {

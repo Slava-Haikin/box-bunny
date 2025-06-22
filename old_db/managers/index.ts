@@ -1,9 +1,9 @@
-import { GroceryList, Ingredient, MEAL, MealPlan, Recipe } from "@/types";
+import { GroceryList, Ingredient, MEAL, MealPlan, Recipe } from "@/types/index";
 import { DatabaseConnector } from "../source/connector";
 import SQL_QUERIES from "../queries";
 import { db } from "../source";
 import { cache } from "react";
-import { MENU_DURATION_IN_DAYS } from "@/constants";
+import config from "@/config";
 
 class DataManager {
     constructor(private db: DatabaseConnector) {}
@@ -59,7 +59,7 @@ class DataManager {
             return [...acc, ingredient]
         }, [])
 
-        return ingredientsForOneDay.map(ingredient => ({...ingredient, quantity: ingredient.quantity * MENU_DURATION_IN_DAYS }))
+        return ingredientsForOneDay.map(ingredient => ({...ingredient, quantity: ingredient.quantity * config.menuDurationInDays }))
     }
 
     private groupIngredientsByAisle(ingredients: Ingredient[]) {

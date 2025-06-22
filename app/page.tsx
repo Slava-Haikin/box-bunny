@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 import { cachedMealPlan, dataManager } from "@/old_db/managers";
-import { Recipe } from "@/types";
+import { Recipe } from "@/types/index";
 
 export default async function Home() {
   const mealPlan = await cachedMealPlan();

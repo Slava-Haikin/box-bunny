@@ -2,15 +2,15 @@ import sqlite3 from 'sqlite3';
 import { open, Database } from 'sqlite';
 import { existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { rootDir } from '@/constants';
+import config from '@/config';
 
 export class DatabaseConnector {
     private db: Database | null = null;
     private dbPath: string;
 
     constructor(private filename: string) {
-        this.dbPath = join(rootDir, 'db', 'source', this.filename);
-        const dbDir = join(rootDir, 'db', 'source');
+        this.dbPath = join(config.rootDir, 'db', 'source', this.filename);
+        const dbDir = join(config.rootDir, 'db', 'source');
 
         if (!existsSync(dbDir)) {
             mkdirSync(dbDir, { recursive: true });

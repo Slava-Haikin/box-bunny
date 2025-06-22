@@ -25,6 +25,7 @@
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.44.2",
     "drizzle-seed": "^0.3.1",
+    "env-smart": "^2.3.2",
     "lucide-react": "^0.511.0",
     "next": "15.3.3",
     "pg": "^8.16.2",

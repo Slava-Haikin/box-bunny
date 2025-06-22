@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
 import { usersTable } from '@/db/schema';
-import { USER_ROLES } from '@/types';
+import { USER_ROLES } from '@/types/index';
   
 const db = drizzle({ connection: process.env.DATABASE_URL!, casing: 'snake_case' });
 

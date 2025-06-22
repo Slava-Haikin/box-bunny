@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import "./globals.css";
 import { Separator } from "@/components/ui/separator";
 import { Recipe } from "@/types";
-import { cachedMealPlan } from "@/db/managers";
+import { cachedMealPlan } from "@/old_db/managers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,7 +72,7 @@ export default async function RootLayout({
                               {`${recipe.meal}`.toUpperCase()}
                             </h4>
                             <div className="grid items-center gap-4">
-                              {recipe.title}
+                              {recipe.name}
                             </div>
                           </div>
                           <div className="grid gap-2">

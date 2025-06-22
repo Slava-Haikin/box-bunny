@@ -9,7 +9,7 @@ import { Container } from "@/components/ui/container";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-import { cachedMealPlan, dataManager } from "@/db/managers";
+import { cachedMealPlan, dataManager } from "@/old_db/managers";
 import { Recipe } from "@/types";
 
 export default async function Home() {
@@ -37,10 +37,10 @@ export default async function Home() {
                     {products.map((product) => (
                       <li key={product.id}>
                         <Label
-                          htmlFor={product.id}
+                          htmlFor={String(product.id)}
                           className="border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 w-full justify-start"
                         >
-                          <Checkbox id={product.id} />
+                          <Checkbox id={String(product.id)} />
                           <span>
                             {product.name.toUpperCase()}
                             {" / "}
@@ -62,19 +62,17 @@ export default async function Home() {
               defaultValue={Object.values(mealPlan).at(0).id}
             >
               {recipes.map((meal) => (
-                <AccordionItem value={meal.id} key={meal.id}>
-                  <AccordionTrigger>{meal.title}</AccordionTrigger>
+                <AccordionItem value={String(meal.id)} key={meal.id}>
+                  <AccordionTrigger>{meal.name}</AccordionTrigger>
                   <AccordionContent className="flex flex-col gap-4 text-balance">
                     <ol>
-                      {meal.instructions
-                        .split(";")
-                        .map((instruction, index) => (
-                          <li key={instruction}>
-                            {index + 1}
-                            {". "}
-                            {instruction}
-                          </li>
-                        ))}
+                      {meal.instructions.map((instruction, index) => (
+                        <li key={instruction}>
+                          {index + 1}
+                          {". "}
+                          {instruction}
+                        </li>
+                      ))}
                     </ol>
                   </AccordionContent>
                 </AccordionItem>

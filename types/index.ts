@@ -1,12 +1,20 @@
 import { ingredientsTable, recipesTable } from "@/data/db/schema";
 
+export enum CookingStyle {
+    Lazy = 'lazy',
+    Regular = 'regular',
+    Chief = 'chief',
+}
+
 export type Configuration = {
   dbUrl: string;
   ownerFirstName: string;
   ownerLastName: string;
   ownerEmail: string;
   ownerHashedPassword: string;
-  menuDurationInDays: number;
+  menuDurationInDays: number,
+  menuUpdateInterval: number,
+  weekendIncluded: boolean,
   rootDir: string;
 };
 

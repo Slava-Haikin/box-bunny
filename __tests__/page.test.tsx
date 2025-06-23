@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import HomePage from "@/components/pages/HomePage";
 import { cachedMealPlan, dataManager } from '@/data';
 import { Recipe } from '@/types';
- 
+
 test('Page', async () => {
   const mealPlan = await cachedMealPlan();
   const recipes: Recipe[] = Object.values(mealPlan);

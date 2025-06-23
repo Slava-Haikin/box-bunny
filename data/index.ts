@@ -93,10 +93,6 @@ class DataManager {
     private pickRandom<T>(array: T[]): T {
         return array[Math.floor(Math.random() * array.length)];
     }
-
-    async showUser() {
-        return db.select().from(usersTable);
-    } 
 }
 
 export const dataManager = new DataManager(db);

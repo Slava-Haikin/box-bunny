@@ -14,12 +14,12 @@ export const difficultyEnum = pgEnum('difficulty', enumToPgEnum(COOKING_DIFFICUL
 export const recipeTagEnum = pgEnum('recipeTags', enumToPgEnum(RecipeTag));
 
 export const usersTable = pgTable("users", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
-  email: varchar().notNull(),
-  hashedPassword: varchar().notNull(),
+  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
+  email: varchar('email').notNull(),
+  hashedPassword: varchar('hashed_password').notNull(),
   role: roleEnum('role').notNull(),
-  firstName: varchar().notNull(),
-  lastName: varchar().notNull(),
+  firstName: varchar('first_name').notNull(),
+  lastName: varchar('last_name').notNull(),
   ...timestamps
 });
 

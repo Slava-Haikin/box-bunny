@@ -66,7 +66,8 @@ interface WeekMealPlan {
     }[]
 }
 
-type GroceryList = Record<Aisle, RecipeIngredient[]>
+type GroceryGroups = Record<Aisle, RecipeIngredient[]>
+type GroceryList = [Aisle, RecipeIngredient[]][]
 
 // Configuration
 export type Configuration = {
@@ -86,6 +87,7 @@ export type {
     Ingredient,
     GroceryList,
     WeekMealPlan,
+    GroceryGroups,
     RecipeIngredient,
 }
 

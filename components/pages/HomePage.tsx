@@ -21,7 +21,7 @@ export default function HomePage({
   recipes,
   groceryList,
 }: HomePageProps) {
-  const groceryListData = Object.entries(groceryList);
+  const groceryListData = groceryList;
 
   return (
     <Container>

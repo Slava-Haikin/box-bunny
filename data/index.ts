@@ -6,7 +6,7 @@ import { db } from "./db";
 import { ingredientsTable, recipeIngredientsTable, recipesTable } from "./db/schema";
 
 import Week from "./Week";
-import { CookingStyle, GroceryList, Ingredient, MEAL, Menu, WEEK_DURATION, WeekMealPlan } from "@/types/index";
+import { CookingStyle, GroceryGroups, GroceryList, Ingredient, MEAL, Menu, RecipeIngredient, WEEK_DURATION, WeekMealPlan } from "@/types/index";
 
 const deriveMenuUpdateInterval = (cookingStyle: CookingStyle) => {
   switch (cookingStyle) {
@@ -24,23 +24,32 @@ type Db = NodePgDatabase<Record<string, never>> & {
 }
 
 class WeekMealPlanGenerator {
-    private week: Week;
-    private mealPlan?: Menu | null = null;
+    private db: Db = db;
+    private week: Week = new Week(new Date);
+    private weekMealPlan?: WeekMealPlan | null = null;
 
     constructor(
-        private db: Db,
-        private options: {
-            workingWeekCookingStyle: CookingStyle,
-            weekendIncluded: boolean,
-            weekendCookingStyle: CookingStyle
-        }) {
-            this.week =  new Week(new Date);
+            private workingWeekCookingStyle: CookingStyle,
+            private weekendCookingStyle: CookingStyle,
+            private weekendIncluded: boolean,
+    ) {}
+    
+    async generate(): Promise<{ weekMealPlan: WeekMealPlan; groceryList: GroceryList; recipes: RecipeIngredient[] }> {
+        const weekMealPlan = await this.generateMealPlan();
+        const groceryList = await this.deriveGroceryList(weekMealPlan);
+        const recipes = Object.values(weekMealPlan);;
+
+        return {
+            weekMealPlan,
+            groceryList,
+            recipes,
+        }
     }
 
-    async generate(): Promise<WeekMealPlan> {
+    async generateMealPlan(): Promise<WeekMealPlan> {
         // Calculate total menus number
-        const workingWeekMenuNumber = Math.ceil(WEEK_DURATION.workingWeekDuration / deriveMenuUpdateInterval(this.options.workingWeekCookingStyle));
-        const weekendMenuNumber = Math.ceil(WEEK_DURATION.weekendDuration / deriveMenuUpdateInterval(this.options.weekendCookingStyle));
+        const workingWeekMenuNumber = Math.ceil(WEEK_DURATION.workingWeekDuration / deriveMenuUpdateInterval(this.workingWeekCookingStyle));
+        const weekendMenuNumber = Math.ceil(WEEK_DURATION.weekendDuration / deriveMenuUpdateInterval(this.weekendCookingStyle));
         const menusWithoudPeriod: Menu[] = [];
 
         // Generate menus
@@ -56,10 +65,12 @@ class WeekMealPlanGenerator {
         }));
 
         // Return result
-        return {
+        this.weekMealPlan = {
             period: this.week.getWeekPeriod(),
             menus,
         }
+
+        return this.weekMealPlan;
     }
 
     async generateMenu(): Promise<Menu> {
@@ -127,7 +138,7 @@ class WeekMealPlanGenerator {
     }
 
     private groupIngredientsByAisle(ingredients: (Ingredient  & { quantity: number })[]) {
-        return ingredients.reduce<GroceryList>((acc, ingredient) => {
+        return Object.entries(ingredients.reduce<GroceryGroups>((acc, ingredient) => {
             const aisle = ingredient.aisle || "Uncategorized"
 
             if (!acc[aisle]) {
@@ -137,7 +148,7 @@ class WeekMealPlanGenerator {
             acc[aisle].push(ingredient)
 
             return acc;
-        }, {});
+        }, {}));
     }
 
     private pickRandom<T>(array: T[]): T {
@@ -145,10 +156,11 @@ class WeekMealPlanGenerator {
     }
 }
 
-export const weekMealPlan = new WeekMealPlanGenerator(db, {
-    workingWeekCookingStyle: CookingStyle.Lazy,
-    weekendCookingStyle: CookingStyle.Lazy,
-    weekendIncluded: true,
-});
+export const weekMealPlan = new WeekMealPlanGenerator(CookingStyle.Lazy, CookingStyle.Lazy, true);
 
 export const cachedMenu = cache(async () => weekMealPlan.generateMenu());
+export const cachedWeekMealPlan = (...args: [CookingStyle.Lazy, CookingStyle.Lazy, boolean]) => {
+    const weekMealPlan = new WeekMealPlanGenerator(...args);
+
+    return cache(async () => weekMealPlan.generate())();
+}

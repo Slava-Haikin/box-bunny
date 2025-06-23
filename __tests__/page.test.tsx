@@ -1,13 +1,13 @@
 import { expect, test } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import HomePage from "@/components/pages/HomePage";
-import { cachedMealPlan, dataManager } from '@/data';
+import { cachedMealPlan, weekMealPlan } from '@/data';
 import { Recipe } from '@/types';
 
 test('Page', async () => {
   const mealPlan = await cachedMealPlan();
   const recipes: Recipe[] = Object.values(mealPlan);
-  const groceryList = await dataManager.deriveGroceryList(mealPlan);
+  const groceryList = await weekMealPlan.deriveGroceryList(mealPlan);
 
   render(<HomePage mealPlan={mealPlan} recipes={recipes} groceryList={groceryList} />)
 

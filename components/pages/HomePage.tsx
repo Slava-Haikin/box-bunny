@@ -11,19 +11,21 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { GroceryList, MealPlan, Recipe } from "@/types";
 
 interface HomePageProps {
-    mealPlan: MealPlan;
-    recipes: Recipe[];
-    groceryList: GroceryList;
+  mealPlan: MealPlan;
+  recipes: Recipe[];
+  groceryList: GroceryList;
 }
 
-export default function HomePage({ mealPlan, recipes, groceryList }: HomePageProps) {
-    const groceryListData = Object.entries(groceryList);
+export default function HomePage({
+  mealPlan,
+  recipes,
+  groceryList,
+}: HomePageProps) {
+  const groceryListData = Object.entries(groceryList);
 
-    return (
-        <Container>
-      <h1>
-        This week:
-      </h1>
+  return (
+    <Container>
+      <h1>This week:</h1>
       <br />
       <div className="flex w-full flex-col gap-6 items-center">
         <Tabs defaultValue="grocery-list" className="w-full">
@@ -87,5 +89,5 @@ export default function HomePage({ mealPlan, recipes, groceryList }: HomePagePro
         </Tabs>
       </div>
     </Container>
-    )
+  );
 }

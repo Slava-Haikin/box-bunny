@@ -8,10 +8,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Container } from "@/components/ui/container";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { GroceryList, MealPlan, Recipe } from "@/types";
+import { GroceryList, Menu, Recipe } from "@/types";
 
 interface HomePageProps {
-  mealPlan: MealPlan;
+  mealPlan: Menu;
   recipes: Recipe[];
   groceryList: GroceryList;
 }

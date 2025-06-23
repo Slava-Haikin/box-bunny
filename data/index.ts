@@ -1,10 +1,12 @@
 import { cache } from "react";
 
-import { db } from "./db";
 import { NodePgClient, NodePgDatabase } from "drizzle-orm/node-postgres";
-import { CookingStyle, GroceryList, Ingredient, MEAL, Menu, Period, WEEK_DURATION, WeekMealPlan } from "@/types/index";
 import { eq } from "drizzle-orm";
+import { db } from "./db";
 import { ingredientsTable, recipeIngredientsTable, recipesTable } from "./db/schema";
+
+import Week from "./Week";
+import { CookingStyle, GroceryList, Ingredient, MEAL, Menu, WEEK_DURATION, WeekMealPlan } from "@/types/index";
 
 const deriveMenuUpdateInterval = (cookingStyle: CookingStyle) => {
   switch (cookingStyle) {
@@ -22,10 +24,7 @@ type Db = NodePgDatabase<Record<string, never>> & {
 }
 
 class WeekMealPlanGenerator {
-    private weekendPeriod: Period;
-    private currentWeekPeriod: Period;
-    private workingWeekPeriod: Period;
-    
+    private week: Week;
     private mealPlan?: Menu | null = null;
 
     constructor(
@@ -35,9 +34,7 @@ class WeekMealPlanGenerator {
             weekendIncluded: boolean,
             weekendCookingStyle: CookingStyle
         }) {
-            this.currentWeekPeriod = this.getCurrentWeekPeriod();
-            this.workingWeekPeriod = this.getWorkingWeekPeriod();
-            this.weekendPeriod = this.getWeekendPeriod();
+            this.week =  new Week(new Date);
     }
 
     async generate(): Promise<WeekMealPlan> {
@@ -55,12 +52,12 @@ class WeekMealPlanGenerator {
         // Map menus to dates
         const menus = menusWithoudPeriod.map((menu, index) => ({
             menu,
-            period: index === 0 ? this.workingWeekPeriod : this.weekendPeriod,
+            period: index === 0 ? this.week.getWorkingWeekPeriod() : this.week.getWeekendPeriod(),
         }));
 
         // Return result
         return {
-            period: this.getCurrentWeekPeriod(),
+            period: this.week.getWeekPeriod(),
             menus,
         }
     }
@@ -145,45 +142,6 @@ class WeekMealPlanGenerator {
 
     private pickRandom<T>(array: T[]): T {
         return array[Math.floor(Math.random() * array.length)];
-    }
-
-    private getCurrentWeekPeriod(): Period {
-        const today = new Date()
-
-        const day = today.getDay() // 0 — воскресенье, 1 — понедельник, ..., 6 — суббота
-
-        const diffToMonday = (day === 0 ? -6 : 1 - day)
-        const start = new Date(today)
-        start.setDate(today.getDate() + diffToMonday)
-        start.setHours(0, 0, 0, 0)
-
-        const end = new Date(start)
-        end.setDate(start.getDate() + 6)
-        end.setHours(23, 59, 59, 999)
-
-        return { start, end }
-    }
-
-    private getWorkingWeekPeriod(): Period {
-        const { start } = this.currentWeekPeriod
-
-        const end = new Date(start)
-        end.setDate(start.getDate() + WEEK_DURATION.workingWeekDuration - 1)
-        end.setHours(23, 59, 59, 999)
-
-        return { start: new Date(start), end }
-    }
-
-    private getWeekendPeriod(): Period {
-        const start = new Date(this.currentWeekPeriod.start)
-        start.setDate(start.getDate() + WEEK_DURATION.workingWeekDuration)
-        start.setHours(0, 0, 0, 0)
-
-        const end = new Date(start)
-        end.setDate(start.getDate() + WEEK_DURATION.weekDuration - 1)
-        end.setHours(23, 59, 59, 999)
-
-        return { start, end }
     }
 }
 

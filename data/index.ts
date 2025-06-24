@@ -23,15 +23,13 @@ class WeekMealPlanGenerator {
             private weekendIncluded: boolean,
     ) {}
     
-    async generate(): Promise<{ weekMealPlan: WeekMealPlan; groceryList: GroceryList; recipes: RecipeIngredient[] }> {
+    async generate(): Promise<{ weekMealPlan: WeekMealPlan; groceryList: GroceryList; }> {
         const weekMealPlan = await this.generateMealPlan();
         const groceryList = await this.deriveGroceryList(weekMealPlan);
-        const recipes = Object.values(weekMealPlan);;
 
         return {
             weekMealPlan,
             groceryList,
-            recipes,
         }
     }
 

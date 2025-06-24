@@ -5,17 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Container } from "@/components/ui/container";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 
 import "./globals.css";
-import { Separator } from "@/components/ui/separator";
-import { CookingStyle, WeekMealPlan } from "@/types/index";
-import { cachedWeekMealPlan } from "@/data";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,23 +25,11 @@ export const metadata: Metadata = {
   description: "Keep it tight - keep health right!",
 };
 
-// export function findMenuByDate(weekMealPlan: WeekMealPlan, date = new Date()): WeekMealPlan["menus"][number] | undefined {
-//     return weekMealPlan.menus.find(({ period }) => {
-//         return date >= period.start && date <= period.end
-//     });
-// }
-
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { recipes } = await cachedWeekMealPlan(
-    CookingStyle.Lazy,
-    CookingStyle.Lazy,
-    true,
-  );
-  // const currentMenu = findMenuByDate(weekMealPlan);
 
   return (
     <html lang="en" className="w-[100vw] overflow-x-hidden">
@@ -59,7 +40,7 @@ export default async function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased flex min-h-screen flex-col`}
         >
           <header>
-            <Container className="flex justify-between">
+            <Container className="flex justify-between items-center">
               <Link href={"/"} className="block w-fit">
                 <Image
                   src={"/logo.svg"}
@@ -68,35 +49,10 @@ export default async function RootLayout({
                   alt={"Box Bunny Logo."}
                 />
               </Link>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline">Meal plan</Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-80">
-                  {recipes.map((recipe) => {
-                    return (
-                      <div key={recipe.id}>
-                        <div className="grid gap-3 py-2">
-                          <div className="space-y-2">
-                            <h4 className="leading-none font-medium">
-                              {`${recipe.name}`.toUpperCase()}
-                            </h4>
-                            <div className="grid items-center gap-4">
-                              {recipe.name}
-                            </div>
-                          </div>
-                          <div className="grid gap-2">
-                            <p className="text-muted-foreground text-sm">
-                              {recipe.name}
-                            </p>
-                          </div>
-                        </div>
-                        <Separator />
-                      </div>
-                    );
-                  })}
-                </PopoverContent>
-              </Popover>
+              <Avatar className="w-16 h-16">
+                <AvatarImage src="https://github.com/shadcn.png" alt='Userpic.' />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
             </Container>
           </header>
 

@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import Link from "next/link";
-import Image from "next/image";
 
 import { Container } from "@/components/ui/container";
 
 import "./globals.css";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  CalendarDaysIcon,
+  CircleCheckBigIcon,
+  CircleUserRoundIcon,
+} from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,12 +36,11 @@ export default async function RootLayout({
   return (
     <html lang="en" className="w-[100vw] overflow-x-hidden">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen relative pb-18`}
       >
-        <div
-          className={`${geistSans.variable} ${geistMono.variable} antialiased flex min-h-screen flex-col`}
-        >
-          <header>
+        <div className={`flex min-h-screen flex-col`}>
+          {children}
+          {/* <header>
             <Container className="flex justify-between items-center">
               <Link href={"/"} className="block w-fit">
                 <Image
@@ -56,16 +58,49 @@ export default async function RootLayout({
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </Container>
-          </header>
+          </header> */}
 
-          <main className="flex-1">{children}</main>
+          {/* <main className="flex-1">{children}</main> */}
 
-          <footer>
+          {/* <footer>
             <Container className="text-center">
               The easiest way to healthy life and sexy body.
             </Container>
-          </footer>
+          </footer> */}
         </div>
+
+        <Container className="fixed bottom-0 left-0 right-0 p-0 bg-white">
+          <nav
+            className="p-4 rounded-t-2xl"
+            style={{ boxShadow: "0 -4px 12px rgba(0, 0, 0, 0.1)" }}
+          >
+            <ul className="flex justify-between items-center gap-4 mx-auto">
+              <li className="w-10 h-10">
+                <Link
+                  href={"todo"}
+                  className="flex justify-center items-center"
+                >
+                  <CircleCheckBigIcon width="100%" height="auto" />
+                </Link>
+              </li>
+              <li className="w-10 h-10">
+                <Link href={"/"} className="flex justify-center items-center">
+                  <CalendarDaysIcon width="100%" height="auto" />
+                  <span className="hidden">To-do list</span>
+                </Link>
+              </li>
+              <li className="w-10 h-10">
+                <Link
+                  href={"profile"}
+                  className="flex justify-center items-center"
+                >
+                  <CircleUserRoundIcon width="100%" height="auto" />
+                  <span className="hidden">Profile</span>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </Container>
       </body>
     </html>
   );

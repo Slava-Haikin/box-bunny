@@ -9,7 +9,6 @@ export default async function Home() {
     CookingStyle.Lazy,
     true,
   );
-  // console.log(weekMealPlan);
 
   return <HomePage weekMealPlan={weekMealPlan} groceryList={groceryList} />;
 }

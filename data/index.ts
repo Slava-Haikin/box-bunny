@@ -46,7 +46,7 @@ class WeekMealPlanGenerator {
         }
     }
 
-    async generateMealPlan(): Promise<WeekMealPlan> {
+    private async generateMealPlan(): Promise<WeekMealPlan> {
         // Calculate total menus number
         const workingWeekMenuNumber = Math.ceil(WEEK_DURATION.workingWeekDuration / deriveMenuUpdateInterval(this.workingWeekCookingStyle));
         const weekendMenuNumber = Math.ceil(WEEK_DURATION.weekendDuration / deriveMenuUpdateInterval(this.weekendCookingStyle));
@@ -73,7 +73,7 @@ class WeekMealPlanGenerator {
         return this.weekMealPlan;
     }
 
-    async generateMenu(): Promise<Menu> {
+    private async generateMenu(): Promise<Menu> {
         const breakfasts = await this.db.select().from(recipesTable).where(eq(recipesTable.meal, MEAL.breakfast));
         const lunches = await this.db.select().from(recipesTable).where(eq(recipesTable.meal, MEAL.lunch));
         const snacks = await this.db.select().from(recipesTable).where(eq(recipesTable.meal, MEAL.snack));
@@ -87,16 +87,21 @@ class WeekMealPlanGenerator {
         };
     }
 
-    async deriveGroceryList(menu: Menu): Promise<GroceryList> {
-        const ingredients = await Promise.all([
-            this.deriveRecipeIngredients(menu[MEAL.breakfast].id),
-            this.deriveRecipeIngredients(menu[MEAL.lunch].id),
-            this.deriveRecipeIngredients(menu[MEAL.snack].id),
-            this.deriveRecipeIngredients(menu[MEAL.supper].id),
-        ])
-        const summarizedIngredients = this.summarizeIngredients(ingredients.flat())
+    private async deriveGroceryList(weekMealPlan: WeekMealPlan): Promise<GroceryList> {
+    const recipeIds = weekMealPlan.menus.flatMap(({ menu }) => [
+        menu[MEAL.breakfast].id,
+        menu[MEAL.lunch].id,
+        menu[MEAL.snack].id,
+        menu[MEAL.supper].id,
+    ]);
 
-        return this.groupIngredientsByAisle(summarizedIngredients)
+    const ingredients = await Promise.all(
+        recipeIds.map((id) => this.deriveRecipeIngredients(id))
+    );
+
+    const summarizedIngredients = this.summarizeIngredients(ingredients.flat());
+
+    return this.groupIngredientsByAisle(summarizedIngredients);
     }
 
     private async deriveRecipeIngredients(recipeId: number): Promise<(Ingredient  & { quantity: number })[]> {
@@ -156,9 +161,6 @@ class WeekMealPlanGenerator {
     }
 }
 
-export const weekMealPlan = new WeekMealPlanGenerator(CookingStyle.Lazy, CookingStyle.Lazy, true);
-
-export const cachedMenu = cache(async () => weekMealPlan.generateMenu());
 export const cachedWeekMealPlan = (...args: [CookingStyle.Lazy, CookingStyle.Lazy, boolean]) => {
     const weekMealPlan = new WeekMealPlanGenerator(...args);
 

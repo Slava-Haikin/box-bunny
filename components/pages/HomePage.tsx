@@ -8,21 +8,19 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Container } from "@/components/ui/container";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { GroceryList, Menu, Recipe } from "@/types";
+import { GroceryList, RecipeIngredient, WeekMealPlan } from "@/types";
 
 interface HomePageProps {
-  mealPlan: Menu;
-  recipes: Recipe[];
+  weekMealPlan: WeekMealPlan;
+  recipes: RecipeIngredient[];
   groceryList: GroceryList;
 }
 
 export default function HomePage({
-  mealPlan,
+  weekMealPlan,
   recipes,
   groceryList,
 }: HomePageProps) {
-  const groceryListData = groceryList;
-
   return (
     <Container>
       <h1>This week:</h1>
@@ -35,7 +33,7 @@ export default function HomePage({
           </TabsList>
           <TabsContent value="grocery-list">
             <section>
-              {groceryListData.map(([aisle, products]) => (
+              {groceryList.map(([aisle, products]) => (
                 <div key={aisle}>
                   <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                     {aisle}
@@ -61,12 +59,12 @@ export default function HomePage({
               ))}
             </section>
           </TabsContent>
-          <TabsContent value="preparation">
+          {/* <TabsContent value="preparation">
             <Accordion
               type="single"
               collapsible
               className="w-full"
-              defaultValue={Object.values(mealPlan).at(0).id}
+              defaultValue={Object.values(weekMealPlan).at(0).id}
             >
               {recipes.map((meal) => (
                 <AccordionItem value={String(meal.id)} key={meal.id}>
@@ -85,7 +83,7 @@ export default function HomePage({
                 </AccordionItem>
               ))}
             </Accordion>
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
     </Container>

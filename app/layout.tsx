@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button";
 
 import "./globals.css";
 import { Separator } from "@/components/ui/separator";
-import { Recipe } from "@/types/index";
-import { cachedMenu } from "@/data";
+import { CookingStyle } from "@/types/index";
+import { cachedWeekMealPlan } from "@/data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,8 +37,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const mealPlan = await cachedMenu();
-  const recipes: Recipe[] = Object.values(mealPlan);
+  const { recipes } = await cachedWeekMealPlan(
+    CookingStyle.Lazy,
+    CookingStyle.Lazy,
+    true,
+  );
+  console.log(recipes);
 
   return (
     <html lang="en" className="w-[100vw] overflow-x-hidden">
@@ -69,7 +73,7 @@ export default async function RootLayout({
                         <div className="grid gap-3 py-2">
                           <div className="space-y-2">
                             <h4 className="leading-none font-medium">
-                              {`${recipe.meal}`.toUpperCase()}
+                              {`${recipe.name}`.toUpperCase()}
                             </h4>
                             <div className="grid items-center gap-4">
                               {recipe.name}
@@ -77,7 +81,7 @@ export default async function RootLayout({
                           </div>
                           <div className="grid gap-2">
                             <p className="text-muted-foreground text-sm">
-                              {recipe.description}
+                              {recipe.name}
                             </p>
                           </div>
                         </div>

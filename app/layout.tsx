@@ -30,7 +30,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en" className="w-[100vw] overflow-x-hidden">
       <body
@@ -50,7 +49,10 @@ export default async function RootLayout({
                 />
               </Link>
               <Avatar className="w-16 h-16">
-                <AvatarImage src="https://github.com/shadcn.png" alt='Userpic.' />
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="Userpic."
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </Container>

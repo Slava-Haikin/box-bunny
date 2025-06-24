@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Container } from "@/components/ui/container";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { GroceryList, Recipe, RecipeIngredient, WeekMealPlan } from "@/types";
+import { GroceryList, Recipe, WeekMealPlan } from "@/types";
 import {
   Popover,
   PopoverContent,
@@ -22,16 +22,19 @@ interface HomePageProps {
   groceryList: GroceryList;
 }
 
-export function findMenuByDate(weekMealPlan: WeekMealPlan, date = new Date()): WeekMealPlan["menus"][number] | undefined {
-    return weekMealPlan.menus.find(({ period }) => {
-        return date >= period.start && date <= period.end
-    });
+export function findMenuByDate(
+  weekMealPlan: WeekMealPlan,
+  date = new Date(),
+): WeekMealPlan["menus"][number] | undefined {
+  return weekMealPlan.menus.find(({ period }) => {
+    return date >= period.start && date <= period.end;
+  });
 }
 
 export default function HomePage({ weekMealPlan, groceryList }: HomePageProps) {
   const menuWithPeriod = findMenuByDate(weekMealPlan);
   const menu = Object.values(menuWithPeriod?.menu ?? {}) as Recipe[];
-  
+
   return (
     <Container>
       <div className="flex justify-between mb-8">

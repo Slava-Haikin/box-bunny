@@ -11,10 +11,5 @@ export default async function Home() {
   );
   // console.log(weekMealPlan);
 
-  return (
-    <HomePage
-      weekMealPlan={weekMealPlan}
-      groceryList={groceryList}
-    />
-  );
+  return <HomePage weekMealPlan={weekMealPlan} groceryList={groceryList} />;
 }

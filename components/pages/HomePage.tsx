@@ -16,11 +16,13 @@ interface HomePageProps {
   groceryList: GroceryList;
 }
 
+
+
 export default function HomePage({
-  weekMealPlan,
   recipes,
   groceryList,
 }: HomePageProps) {
+
   return (
     <Container>
       <h1>This week:</h1>

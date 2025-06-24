@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 
 import "./globals.css";
 import { Separator } from "@/components/ui/separator";
-import { CookingStyle } from "@/types/index";
+import { CookingStyle, WeekMealPlan } from "@/types/index";
 import { cachedWeekMealPlan } from "@/data";
 
 const geistSans = Geist({
@@ -32,6 +32,12 @@ export const metadata: Metadata = {
   description: "Keep it tight - keep health right!",
 };
 
+// export function findMenuByDate(weekMealPlan: WeekMealPlan, date = new Date()): WeekMealPlan["menus"][number] | undefined {
+//     return weekMealPlan.menus.find(({ period }) => {
+//         return date >= period.start && date <= period.end
+//     });
+// }
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -42,6 +48,7 @@ export default async function RootLayout({
     CookingStyle.Lazy,
     true,
   );
+  // const currentMenu = findMenuByDate(weekMealPlan);
 
   return (
     <html lang="en" className="w-[100vw] overflow-x-hidden">

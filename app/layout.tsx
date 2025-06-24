@@ -42,7 +42,6 @@ export default async function RootLayout({
     CookingStyle.Lazy,
     true,
   );
-  console.log(recipes);
 
   return (
     <html lang="en" className="w-[100vw] overflow-x-hidden">

@@ -26,7 +26,7 @@ test('Week', () => {
         'Sun Apr 04 1999',
     ]);
 
-    const menuPeriods = week.getMenuPeriods(workingWeekStyle, weekendStyle);
+    const menuPeriods = week.getMenuPeriods(workingWeekStyle, weekendStyle, true);
 
     expect(menuPeriods).toEqual([
         {

@@ -56,7 +56,7 @@ export default class Week {
         return dates
     }
 
-    getMenuPeriods(workingStyle: CookingStyle, weekendStyle: CookingStyle): Period[] {
+    getMenuPeriods(workingStyle: CookingStyle, weekendStyle: CookingStyle, weekendIncluded: boolean): Period[] {
         const deriveMenuUpdateInterval = (style: CookingStyle) => {
             switch (style) {
                 case CookingStyle.Chief:
@@ -87,7 +87,7 @@ export default class Week {
 
         const weekendMenuCount = Math.ceil(weekendDays.length / deriveMenuUpdateInterval(weekendStyle))
         const weekendMenuLength = Math.ceil(weekendDays.length / weekendMenuCount)
-        const weekendChunks = splitDates(weekendDays, weekendMenuLength)
+        const weekendChunks = weekendIncluded ? splitDates(weekendDays, weekendMenuLength) : [];
 
         return [...workingChunks, ...weekendChunks].map(chunk => ({
             start: chunk[0],

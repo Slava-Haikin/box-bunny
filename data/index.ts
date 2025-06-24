@@ -8,17 +8,6 @@ import { ingredientsTable, recipeIngredientsTable, recipesTable } from "./db/sch
 import Week from "./Week";
 import { CookingStyle, GroceryGroups, GroceryList, Ingredient, MEAL, Menu, RecipeIngredient, WEEK_DURATION, WeekMealPlan } from "@/types/index";
 
-const deriveMenuUpdateInterval = (cookingStyle: CookingStyle) => {
-  switch (cookingStyle) {
-    case CookingStyle.Chief:
-      return 1;
-    case CookingStyle.Regular:
-      return 3;
-    default:
-      return 7;
-  }
-}
-
 type Db = NodePgDatabase<Record<string, never>> & {
     $client: NodePgClient;
 }
@@ -47,24 +36,15 @@ class WeekMealPlanGenerator {
     }
 
     private async generateMealPlan(): Promise<WeekMealPlan> {
-        // Calculate total menus number
-        const workingWeekMenuNumber = Math.ceil(WEEK_DURATION.workingWeekDuration / deriveMenuUpdateInterval(this.workingWeekCookingStyle));
-        const weekendMenuNumber = Math.ceil(WEEK_DURATION.weekendDuration / deriveMenuUpdateInterval(this.weekendCookingStyle));
-        const menusWithoudPeriod: Menu[] = [];
+        const periods = this.week.getMenuPeriods(this.workingWeekCookingStyle, this.weekendCookingStyle, true)
 
-        // Generate menus
-        for (let i = 0; i < workingWeekMenuNumber + weekendMenuNumber; i++ ) {
-            const newMenu = await this.generateMenu();
-            menusWithoudPeriod.push(newMenu)
-        }
+        const menus = await Promise.all(
+            periods.map(async (period) => ({
+                period,
+                menu: await this.generateMenu(),
+            }))
+        )
 
-        // Map menus to dates
-        const menus = menusWithoudPeriod.map((menu, index) => ({
-            menu,
-            period: index === 0 ? this.week.getWorkingWeekPeriod() : this.week.getWeekendPeriod(),
-        }));
-
-        // Return result
         this.weekMealPlan = {
             period: this.week.getWeekPeriod(),
             menus,
